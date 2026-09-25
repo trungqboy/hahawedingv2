@@ -1,0 +1,238 @@
+---
+const img = (file: string) => `/images/${file}`;
+
+const heroImage = img('497510492_719181543804148_7336016173145369377_n.jpg');
+
+const chapters = [
+  {
+    num: 'I',
+    kicker: 'Chapter I',
+    title: 'Khoảnh khắc',
+    line: 'Ánh sáng tự nhiên, cảm xúc thật — không cần pose quá đà.',
+    img: img('486148641_678354381220198_4662320279076891235_n.jpg'),
+    alt: 'Cặp đôi chụp ảnh cưới',
+  },
+  {
+    num: 'II',
+    kicker: 'Chapter II',
+    title: 'Kết nối',
+    line: 'Mỗi cặp đôi một câu chuyện — chúng tôi chỉ ghi lại cho bạn.',
+    img: img('492252228_703873295334973_8274147873496200990_n.jpg'),
+    alt: 'Trang điểm cô dâu',
+  },
+  {
+    num: 'III',
+    kicker: 'Chapter III',
+    title: 'Trọn vẹn',
+    line: 'Từ makeup đến album — một hành trình, một đội ngũ.',
+    img: img('492796629_703873292001640_1414195682529420683_n.jpg'),
+    alt: 'Không gian studio cưới',
+  },
+];
+
+const strip = [
+  { src: img('484974207_676578228064480_2827346855033866682_n.jpg'), alt: 'Ảnh cưới concept lãng mạn' },
+  { src: img('497510492_719181543804148_7336016173145369377_n.jpg'), alt: 'Ảnh cưới studio' },
+  { src: img('495244196_711049291284040_1562207849006092263_n.jpg'), alt: 'Ảnh cưới HaHa Wedding' },
+  { src: img('486148641_678354381220198_4662320279076891235_n.jpg'), alt: 'Cặp đôi ngày cưới' },
+  { src: img('492252228_703873295334973_8274147873496200990_n.jpg'), alt: 'Makeup cô dâu' },
+  { src: img('492796629_703873292001640_1414195682529420683_n.jpg'), alt: 'Studio chụp ảnh' },
+];
+---
+
+<section id="lookbook" class="relative bg-charcoal text-ivory overflow-hidden">
+  <!-- Intro loader line -->
+  <div
+    id="intro-bar"
+    class="fixed top-0 left-0 h-[2px] bg-champagne z-[100] w-0 origin-left"
+  >
+  </div>
+
+  <!-- Hero full viewport -->
+  <div id="hero-panel" class="relative h-screen flex items-end pb-16 md:pb-24 px-6 md:px-12">
+    <div id="hero-bg" class="absolute inset-0 scale-110">
+      <img
+        src={heroImage}
+        alt="Ảnh cưới HaHa Wedding Studio"
+        class="w-full h-full object-cover"
+        fetchpriority="high"
+      />
+      <div class="absolute inset-0 bg-gradient-to-t from-charcoal via-charcoal/40 to-charcoal/20"></div>
+    </div>
+    <div class="relative z-10 max-w-5xl">
+      <p id="hero-kicker" class="text-champagne tracking-[0.35em] uppercase text-xs md:text-sm mb-4 opacity-0">
+        HaHa Wedding Studio
+      </p>
+      <h1
+        id="hero-title"
+        class="font-display text-5xl md:text-7xl lg:text-8xl font-semibold leading-[0.95] opacity-0"
+      >
+        Lưu giữ<br /><span class="italic font-normal text-champagne">điều thiêng liêng</span>
+      </h1>
+      <p id="hero-scroll-hint" class="mt-10 text-sm text-ivory/60 flex items-center gap-3 opacity-0">
+        <span class="inline-block w-8 h-px bg-ivory/40"></span>
+        Cuộn để vào lookbook
+      </p>
+    </div>
+  </div>
+
+  <!-- Pinned story chapters -->
+  {
+    chapters.map((ch, i) => (
+      <div class="story-chapter relative h-screen" data-chapter={i}>
+        <div class="chapter-inner absolute inset-0 flex flex-col md:flex-row">
+          <div class="chapter-visual relative w-full md:w-[52%] h-[45vh] md:h-full overflow-hidden">
+            <img src={ch.img} alt={ch.alt} class="chapter-img w-full h-full object-cover scale-125" loading="lazy" />
+            <div class="absolute inset-0 bg-charcoal/15" />
+            <div
+              class="absolute inset-y-0 right-0 w-24 md:w-40 bg-gradient-to-r from-transparent to-charcoal pointer-events-none"
+              aria-hidden="true"
+            />
+          </div>
+          <div class="chapter-copy relative w-full md:w-[48%] flex items-center px-8 md:px-14 py-12 bg-charcoal overflow-hidden">
+            <span
+              class="chapter-watermark pointer-events-none absolute -right-4 md:right-4 top-1/2 -translate-y-1/2 font-display text-[7rem] md:text-[11rem] leading-none text-ivory/[0.07] select-none"
+              aria-hidden="true">{ch.num}</span
+            >
+            <div
+              class="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top_left,rgba(196,169,98,0.08),transparent_55%)]"
+              aria-hidden="true"
+            />
+            <div class="chapter-content relative max-w-md w-full">
+              <div class="chapter-rule w-12 h-px bg-champagne/50 mb-6" aria-hidden="true"></div>
+              <p class="chapter-kicker text-champagne text-xs tracking-[0.3em] uppercase mb-4">{ch.kicker}</p>
+              <h2 class="chapter-title font-display text-4xl md:text-6xl font-semibold mb-6">{ch.title}</h2>
+              <p class="chapter-line text-ivory/75 text-lg leading-relaxed">{ch.line}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    ))
+  }
+
+  <!-- Horizontal scroll strip -->
+  <div id="horizontal-pin" class="relative h-screen overflow-hidden bg-[#0c0c0c]">
+    <div class="absolute top-8 left-6 md:left-12 z-10">
+      <p class="text-champagne text-xs tracking-[0.3em] uppercase">Portfolio strip</p>
+      <h2 class="font-display text-3xl md:text-4xl mt-2">Khoảnh khắc được chọn</h2>
+    </div>
+    <div id="horizontal-track" class="horizontal-track flex gap-6 md:gap-10 px-6 md:px-12 h-full items-center will-change-transform">
+      {
+        strip.map((item, i) => (
+          <a
+            href={item.src}
+            class="glightbox horizontal-card shrink-0 w-[72vw] md:w-[42vw] aspect-[3/4] overflow-hidden rounded-sm opacity-90 block"
+            data-gallery="portfolio"
+            data-title={item.alt}
+          >
+            <img src={item.src} alt={item.alt} class="w-full h-full object-cover" loading="lazy" />
+          </a>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<script>
+  import gsap from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+  import Lenis from 'lenis';
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (!prefersReducedMotion) {
+    const lenis = new Lenis({
+      duration: 1.15,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      smoothWheel: true,
+    });
+
+    lenis.on('scroll', ScrollTrigger.update);
+    gsap.ticker.add((time) => {
+      lenis.raf(time * 1000);
+    });
+    gsap.ticker.lagSmoothing(0);
+  }
+
+  // Intro
+  gsap.to('#intro-bar', { width: '100%', duration: 1.2, ease: 'power2.inOut' });
+  gsap.fromTo('#hero-kicker', { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 1, delay: 0.4 });
+  gsap.fromTo(
+    '#hero-title',
+    { opacity: 0, y: 40 },
+    { opacity: 1, y: 0, duration: 1.2, delay: 0.65, ease: 'power3.out' },
+  );
+  gsap.fromTo('#hero-scroll-hint', { opacity: 0 }, { opacity: 1, duration: 0.8, delay: 1.2 });
+
+  gsap.to('#hero-bg', {
+    scale: 1,
+    ease: 'none',
+    scrollTrigger: {
+      trigger: '#hero-panel',
+      start: 'top top',
+      end: 'bottom top',
+      scrub: true,
+    },
+  });
+
+  document.querySelectorAll('.story-chapter').forEach((chapter) => {
+    const imgEl = chapter.querySelector('.chapter-img');
+    const kicker = chapter.querySelector('.chapter-kicker');
+    const title = chapter.querySelector('.chapter-title');
+    const line = chapter.querySelector('.chapter-line');
+    const watermark = chapter.querySelector('.chapter-watermark');
+    const rule = chapter.querySelector('.chapter-rule');
+
+    if (prefersReducedMotion) {
+      gsap.set([kicker, title, line, rule, watermark], { opacity: 1, y: 0, scale: 1 });
+      return;
+    }
+
+    gsap.set(kicker, { opacity: 0.55, y: 10 });
+    gsap.set(title, { opacity: 0.22, y: 28 });
+    gsap.set(line, { opacity: 0 });
+    gsap.set(rule, { scaleX: 0.35, opacity: 0.6, transformOrigin: 'left center' });
+    gsap.set(watermark, { opacity: 0.45, scale: 0.92, transformOrigin: 'center center' });
+
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: chapter,
+        start: 'top top',
+        end: '+=85%',
+        pin: true,
+        scrub: 0.55,
+      },
+    });
+
+    tl.fromTo(imgEl, { scale: 1.22 }, { scale: 1, ease: 'none' }, 0)
+      .to(rule, { scaleX: 1, opacity: 1, ease: 'power2.out' }, 0)
+      .to(kicker, { opacity: 1, y: 0, ease: 'power2.out' }, 0.02)
+      .to(title, { opacity: 1, y: 0, ease: 'power3.out' }, 0.1)
+      .fromTo(line, { opacity: 0, y: 16 }, { opacity: 1, y: 0, ease: 'power2.out' }, 0.2)
+      .to(watermark, { opacity: 1, scale: 1, ease: 'none' }, 0);
+  });
+
+  const track = document.querySelector('#horizontal-track');
+  const pinSection = document.querySelector('#horizontal-pin');
+
+  if (track && pinSection) {
+    const getScrollAmount = () => -(track.scrollWidth - window.innerWidth + 48);
+
+    gsap.to(track, {
+      x: getScrollAmount,
+      ease: 'none',
+      scrollTrigger: {
+        trigger: pinSection,
+        start: 'top top',
+        end: () => `+=${Math.abs(getScrollAmount())}`,
+        pin: true,
+        scrub: 0.6,
+        invalidateOnRefresh: true,
+      },
+    });
+  }
+
+  window.addEventListener('load', () => ScrollTrigger.refresh());
+</script>
