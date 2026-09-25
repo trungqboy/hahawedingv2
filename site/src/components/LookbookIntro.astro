@@ -1,7 +1,7 @@
 ---
 const img = (file: string) => `${import.meta.env.BASE_URL}images/${file}`;
 
-const heroImage = img('497510492_719181543804148_7336016173145369377_n.jpg');
+const heroImage = img('486148641_678354381220198_4662320279076891235_n.jpg');
 
 const chapters = [
   {
@@ -9,8 +9,8 @@ const chapters = [
     kicker: 'Chapter I',
     title: 'Khoảnh khắc',
     line: 'Ánh sáng tự nhiên, cảm xúc thật — không cần pose quá đà.',
-    img: img('486148641_678354381220198_4662320279076891235_n.jpg'),
-    alt: 'Cặp đôi chụp ảnh cưới',
+    img: img('497510492_719181543804148_7336016173145369377_n.jpg'),
+    alt: 'Ảnh cưới studio HaHa Wedding',
   },
   {
     num: 'II',
@@ -50,11 +50,11 @@ const strip = [
 
   <!-- Hero full viewport -->
   <div id="hero-panel" class="relative h-screen flex items-end pb-16 md:pb-24 px-6 md:px-12">
-    <div id="hero-bg" class="absolute inset-0 scale-110">
+    <div id="hero-bg" class="absolute inset-0 scale-105">
       <img
         src={heroImage}
-        alt="Ảnh cưới HaHa Wedding Studio"
-        class="w-full h-full object-cover"
+        alt="Cặp đôi chụp ảnh cưới — HaHa Wedding Studio"
+        class="w-full h-full object-cover object-[center_30%]"
         fetchpriority="high"
       />
       <div class="absolute inset-0 bg-gradient-to-t from-charcoal via-charcoal/40 to-charcoal/20"></div>
