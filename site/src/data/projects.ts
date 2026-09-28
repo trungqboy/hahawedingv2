@@ -194,12 +194,10 @@ export function expandStoryImages(images: ProjectImage[]): ProjectImage[] {
       out.push({ path: photos[p % photos.length].path, layout: 'half' });
       out.push({ path: photos[(p + 1) % photos.length].path, layout: 'half' });
       p += 2;
-      out.push({ layout: 'spacer' });
       continue;
     }
     out.push({ path: photos[p % photos.length].path, layout });
     p += 1;
-    if (i % 2 === 1) out.push({ layout: 'spacer' });
   }
 
   return out;

@@ -14,7 +14,6 @@ interface Props {
 const { project } = Astro.props;
 
 type StoryBlock =
-  | { kind: 'spacer' }
   | { kind: 'single'; image: ProjectImage; index: number }
   | { kind: 'duo'; images: [ProjectImage, ProjectImage]; indices: [number, number] };
 
@@ -26,7 +25,6 @@ function buildStoryBlocks(images: ProjectImage[]): StoryBlock[] {
     const current = images[i];
 
     if (isStorySpacer(current)) {
-      blocks.push({ kind: 'spacer' });
       i += 1;
       continue;
     }
@@ -53,16 +51,12 @@ const blocks = buildStoryBlocks(sequence);
 <div class="album-story">
   {
     blocks.map((block) => {
-      if (block.kind === 'spacer') {
-        return <div class="album-story__spacer" aria-hidden="true" />;
-      }
-
       if (block.kind === 'duo') {
         const [a, b] = block.images;
         const [ia, ib] = block.indices;
         return (
           <div class="album-story__duo">
-            <figure class="album-story__figure album-story__figure--half">
+            <figure class="album-story__figure">
               <img
                 src={projectImageSrc(a.path!)}
                 alt={imageAlt(project, a, ia)}
@@ -73,7 +67,7 @@ const blocks = buildStoryBlocks(sequence);
                 height="1500"
               />
             </figure>
-            <figure class="album-story__figure album-story__figure--half">
+            <figure class="album-story__figure">
               <img
                 src={projectImageSrc(b.path!)}
                 alt={imageAlt(project, b, ib)}

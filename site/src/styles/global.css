@@ -433,32 +433,31 @@
   color: rgba(26, 26, 26, 0.72);
 }
 
-/* Album story — cùng bề rộng & tỉ lệ 4:5 như lưới /work */
+/* Album story — lưới 1 cột, gap cố định; cặp ảnh mobile “phẳng” vào lưới */
 .album-story {
-  --album-story-max: min(56rem, 92vw);
-  --album-story-gap: clamp(0.75rem, 1.75vh, 1.15rem);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  --album-story-gap: 10px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: var(--album-story-gap);
-  width: 100%;
+  width: min(56rem, calc(100% - 1.5rem));
   max-width: 100%;
   margin: 0 auto;
-  padding: 0 clamp(1.25rem, 4vw, var(--mosaic-space));
+  padding: 0;
   box-sizing: border-box;
 }
 
-.album-story__spacer {
-  width: 100%;
-  min-height: var(--album-story-gap);
-  flex-shrink: 0;
+@media (min-width: 640px) {
+  .album-story {
+    --album-story-gap: 12px;
+    width: min(56rem, calc(100% - 2.5rem));
+  }
 }
 
 .album-story__figure {
-  margin: 0 auto;
+  margin: 0;
   line-height: 0;
   width: 100%;
-  max-width: var(--album-story-max);
+  min-width: 0;
   aspect-ratio: 4 / 5;
   overflow: hidden;
   background: rgba(26, 26, 26, 0.04);
@@ -466,45 +465,16 @@
 
 .album-story__duo {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   gap: var(--album-story-gap);
   width: 100%;
-  max-width: var(--album-story-max);
-  margin: 0 auto;
-}
-
-@media (min-width: 640px) {
-  .album-story {
-    --album-story-gap: clamp(0.85rem, 2vh, 1.25rem);
-  }
-
-  .album-story__duo {
-    grid-template-columns: 1fr 1fr;
-  }
+  min-width: 0;
 }
 
 @media (max-width: 639px) {
-  .album-story {
-    --album-story-gap: 0.5rem;
-    --album-story-max: min(56rem, 100%);
-    padding-left: 0.75rem;
-    padding-right: 0.75rem;
+  .album-story__duo {
+    display: contents;
   }
-
-  /* Spacer editorial + margin cũ gây hở lớn giữa 2 ảnh — mobile chỉ dùng gap */
-  .album-story__spacer {
-    display: none;
-  }
-}
-
-.album-story__figure--half {
-  max-width: none;
-  width: 100%;
-  margin-bottom: 0;
-}
-
-.album-story__duo .album-story__figure:last-child {
-  margin-bottom: 0;
 }
 
 .album-story__img {
