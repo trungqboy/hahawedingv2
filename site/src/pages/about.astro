@@ -2,8 +2,9 @@
 import Layout from '../layouts/Layout.astro';
 import SiteHeader from '../components/SiteHeader.astro';
 import SiteFooter from '../components/SiteFooter.astro';
-import { img } from '../data/gallery';
+import { img, studio } from '../data/gallery';
 
+const base = import.meta.env.BASE_URL;
 const portrait = img('497510492_719181543804148_7336016173145369377_n.jpg');
 ---
 
@@ -16,7 +17,7 @@ const portrait = img('497510492_719181543804148_7336016173145369377_n.jpg');
     <article class="mx-auto max-w-3xl px-6 md:px-8 py-12 md:py-20">
       <p class="type-kicker mb-6">HaHa Wedding Studio</p>
       <h1 class="type-display-title font-display text-4xl md:text-5xl lg:text-6xl leading-[1.05] mb-10 md:mb-14">
-        Lưu giữ khoảnh khắc <span class="italic font-normal">trọn vẹn &amp; chân thật</span>
+        Không cần diễn. Chỉ cần là hai người, trong một ngày thật đẹp.
       </h1>
 
       <figure class="mb-12 md:mb-16">
@@ -25,22 +26,37 @@ const portrait = img('497510492_719181543804148_7336016173145369377_n.jpg');
 
       <div class="space-y-6 text-charcoal/80 text-base md:text-lg leading-relaxed font-sans">
         <p>
-          HaHa Wedding Studio là nơi bạn có thể thả lỏng trước ống kính — chúng tôi ưu tiên ánh sáng tự nhiên, cảm xúc
-          thật và những khoảnh khắc nhỏ giữa ngày trọng đại của bạn.
+          Chúng tôi tin ảnh cưới đẹp nhất khi bạn không phải cố gắng trở thành một phiên bản khác của mình.
         </p>
         <p>
-          Từ trang điểm cô dâu đến chụp concept trong studio, đội ngũ theo sát từng bước để bạn chỉ cần tập trung vào
-          nhau. Mỗi album là một câu chuyện riêng — không pose gượng, không ảnh giống ảnh của người khác.
+          Ánh sáng tự nhiên, nhịp chụp nhẹ nhàng và một chút hướng dẫn khi cần — vừa đủ để bạn thoải mái tận hưởng thời
+          gian bên nhau. Không ép pose, không làm buổi chụp trở nên căng thẳng. Chỉ đơn giản là ghi lại những ánh
+          nhìn, nụ cười và những khoảnh khắc rất riêng giữa hai người.
         </p>
         <p>
-          Bạn có thể xem portfolio trên trang chủ, nhắn tin qua Facebook hoặc gửi form liên hệ — chúng tôi sẽ phản hồi
-          trong thời gian sớm nhất.
+          Từ makeup cô dâu tại studio đến những concept pre-wedding, mỗi dự án đều được chăm chút với mong muốn tạo ra
+          những bức ảnh không chỉ đẹp ở hiện tại, mà nhiều năm sau khi mở lại album, bạn vẫn có thể nhớ được mình đã
+          cảm thấy như thế nào trong ngày hôm ấy.
+        </p>
+        <p>
+          Studio tại {studio.address} — một không gian riêng tư, ấm áp và gần gũi dành cho những cặp đôi muốn có một
+          buổi chụp thật thoải mái, thật tự nhiên.
+        </p>
+
+        <h2 class="type-kicker pt-2">Dịch vụ</h2>
+        <p class="text-charcoal/72 tracking-wide">
+          Makeup cô dâu · Chụp concept studio · Tư vấn trang phục · Tư vấn bố cục
+        </p>
+        <p>Album và các gói dịch vụ được tư vấn chi tiết khi bạn liên hệ.</p>
+        <p>
+          Xem thêm hình ảnh tại <a href={base} class="underline underline-offset-4 decoration-charcoal/30 hover:decoration-charcoal/60 transition">Home</a> hoặc
+          nhắn tin cho chúng tôi qua <a href={`${base}inquire/`} class="underline underline-offset-4 decoration-charcoal/30 hover:decoration-charcoal/60 transition">Contact</a>.
         </p>
       </div>
 
       <p class="mt-12 text-center">
         <a
-          href={`${import.meta.env.BASE_URL}inquire/`}
+          href={`${base}inquire/`}
           class="inline-block border border-charcoal/25 px-8 py-3.5 text-[11px] uppercase tracking-[0.25em] text-charcoal hover:bg-charcoal hover:text-cream transition duration-300"
         >
           Đặt lịch tư vấn

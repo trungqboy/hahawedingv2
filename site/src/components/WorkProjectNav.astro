@@ -1,0 +1,35 @@
+---
+import type { WeddingProject } from '../data/projects';
+
+interface Props {
+  prev?: WeddingProject;
+  next?: WeddingProject;
+}
+
+const { prev, next } = Astro.props;
+const base = import.meta.env.BASE_URL;
+---
+
+<footer class="album-detail-footer">
+  <nav class="album-detail-footer__nav" aria-label="Album navigation">
+    {
+      prev ? (
+        <a href={`${base}work/${prev.slug}/`} class="album-detail-footer__link album-detail-footer__link--prev">
+          ← Previous
+        </a>
+      ) : (
+        <span class="album-detail-footer__slot" aria-hidden="true" />
+      )
+    }
+    <a href={`${base}work/`} class="album-detail-footer__link album-detail-footer__link--center">Back to Work</a>
+    {
+      next ? (
+        <a href={`${base}work/${next.slug}/`} class="album-detail-footer__link album-detail-footer__link--next">
+          Next →
+        </a>
+      ) : (
+        <span class="album-detail-footer__slot" aria-hidden="true" />
+      )
+    }
+  </nav>
+</footer>

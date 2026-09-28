@@ -1,0 +1,126 @@
+---
+import type { ProjectImage, WeddingProject } from '../data/projects';
+import {
+  expandStoryImages,
+  imageAlt,
+  isStorySpacer,
+  projectImageSrc,
+} from '../data/projects';
+
+interface Props {
+  project: WeddingProject;
+}
+
+const { project } = Astro.props;
+
+type StoryBlock =
+  | { kind: 'spacer' }
+  | { kind: 'single'; image: ProjectImage; index: number }
+  | { kind: 'duo'; images: [ProjectImage, ProjectImage]; indices: [number, number] };
+
+function buildStoryBlocks(images: ProjectImage[]): StoryBlock[] {
+  const blocks: StoryBlock[] = [];
+  let i = 0;
+
+  while (i < images.length) {
+    const current = images[i];
+
+    if (isStorySpacer(current)) {
+      blocks.push({ kind: 'spacer' });
+      i += 1;
+      continue;
+    }
+
+    const next = images[i + 1];
+
+    if (current.layout === 'half' && next && !isStorySpacer(next) && next.layout === 'half' && next.path) {
+      blocks.push({ kind: 'duo', images: [current, next], indices: [i, i + 1] });
+      i += 2;
+      continue;
+    }
+
+    blocks.push({ kind: 'single', image: current, index: i });
+    i += 1;
+  }
+
+  return blocks;
+}
+
+const layoutClass = (layout?: ProjectImage['layout']) => {
+  switch (layout) {
+    case 'wide':
+      return 'album-story__figure--wide';
+    case 'landscape':
+      return 'album-story__figure--landscape';
+    case 'inset':
+      return 'album-story__figure--inset';
+    case 'narrow':
+    case 'portrait':
+      return 'album-story__figure--portrait';
+    case 'full':
+    default:
+      return 'album-story__figure--full';
+  }
+};
+
+const sequence = expandStoryImages(project.images);
+const blocks = buildStoryBlocks(sequence);
+---
+
+<div class="album-story">
+  {
+    blocks.map((block) => {
+      if (block.kind === 'spacer') {
+        return <div class="album-story__spacer" aria-hidden="true" />;
+      }
+
+      if (block.kind === 'duo') {
+        const [a, b] = block.images;
+        const [ia, ib] = block.indices;
+        return (
+          <div class="album-story__duo">
+            <figure class="album-story__figure album-story__figure--half">
+              <img
+                src={projectImageSrc(a.path!)}
+                alt={imageAlt(project, a, ia)}
+                class="album-story__img"
+                loading="lazy"
+                decoding="async"
+                width="1200"
+                height="1500"
+              />
+            </figure>
+            <figure class="album-story__figure album-story__figure--half">
+              <img
+                src={projectImageSrc(b.path!)}
+                alt={imageAlt(project, b, ib)}
+                class="album-story__img"
+                loading="lazy"
+                decoding="async"
+                width="1200"
+                height="1500"
+              />
+            </figure>
+          </div>
+        );
+      }
+
+      const { image, index } = block;
+      if (!image.path) return null;
+
+      return (
+        <figure class:list={['album-story__figure', layoutClass(image.layout)]}>
+          <img
+            src={projectImageSrc(image.path)}
+            alt={imageAlt(project, image, index)}
+            class="album-story__img"
+            loading={index < 2 ? 'eager' : 'lazy'}
+            decoding="async"
+            width="1600"
+            height="1200"
+          />
+        </figure>
+      );
+    })
+  }
+</div>

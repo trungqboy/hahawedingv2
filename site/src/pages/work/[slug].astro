@@ -1,0 +1,47 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import SiteHeader from '../../components/SiteHeader.astro';
+import SiteFooter from '../../components/SiteFooter.astro';
+import WorkProjectGallery from '../../components/WorkProjectGallery.astro';
+import WorkProjectNav from '../../components/WorkProjectNav.astro';
+import { getProjectNeighbors, projects } from '../../data/projects';
+
+export function getStaticPaths() {
+  return projects.map((project) => ({
+    params: { slug: project.slug },
+    props: { project },
+  }));
+}
+
+const { project } = Astro.props;
+const { prev, next } = getProjectNeighbors(project.slug);
+---
+
+<Layout
+  title={`${project.title} | Work | HaHa Wedding Studio`}
+  description={`${project.planning} — ${project.location}. ${project.title} at HaHa Wedding Studio.`}
+>
+  <SiteHeader current="work" />
+  <main class="bg-cream min-h-screen pt-[7.25rem] md:pt-[5.5rem]">
+    <article class="album-detail">
+      <header class="album-detail__intro">
+        <h1 class="album-detail__title type-display-title">{project.title}</h1>
+        <div class="album-detail__facts">
+          <p class="album-detail__fact">
+            <span class="album-detail__fact-label">Planning</span>
+            <span class="album-detail__fact-value">{project.planning}</span>
+          </p>
+          <p class="album-detail__fact">
+            <span class="album-detail__fact-label">Location</span>
+            <span class="album-detail__fact-value">{project.location}</span>
+          </p>
+        </div>
+      </header>
+
+      <WorkProjectGallery project={project} />
+
+      <WorkProjectNav prev={prev} next={next} />
+    </article>
+  </main>
+  <SiteFooter />
+</Layout>

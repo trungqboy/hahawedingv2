@@ -213,6 +213,23 @@
   margin-bottom: var(--mosaic-space);
 }
 
+.work-editorial__services {
+  margin-top: 0.5rem;
+  margin-bottom: -0.25rem;
+}
+
+.work-editorial__services-list {
+  letter-spacing: 0.02em;
+  color: rgba(26, 26, 26, 0.72);
+}
+
+.work-editorial__link--inline {
+  text-transform: none;
+  letter-spacing: 0.02em;
+  font-size: inherit;
+  color: rgba(26, 26, 26, 0.88);
+}
+
 .work-editorial__pair {
   display: grid;
   gap: var(--mosaic-space);
@@ -258,6 +275,306 @@
 
 .work-editorial__link--muted {
   color: rgba(26, 26, 26, 0.55);
+}
+
+/* Work listing — grid 3 / 2 / 1 cột, container giữa màn hình */
+.work-index {
+  --work-grid-gap: 12px;
+  width: 100%;
+  max-width: 68rem;
+  margin: 0 auto;
+  padding: 1.25rem var(--mosaic-space) calc(var(--mosaic-space) * 1.75);
+  box-sizing: border-box;
+}
+
+@media (min-width: 1024px) {
+  .work-index {
+    --work-grid-gap: 14px;
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+  }
+}
+
+.work-index__grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--work-grid-gap);
+}
+
+@media (min-width: 640px) {
+  .work-index__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .work-index__grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.work-index__cell {
+  margin: 0;
+  min-width: 0;
+}
+
+.work-album {
+  position: relative;
+  display: block;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  text-decoration: none;
+  color: rgba(26, 26, 26, 0.88);
+  line-height: 0;
+}
+
+.work-album__img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  transition: transform 1s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .work-album:hover .work-album__img,
+  .work-album:focus-visible .work-album__img {
+    transform: scale(1.03);
+  }
+}
+
+.work-album__label {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+  max-width: calc(100% - 1.25rem);
+  padding: 0.3rem 0.45rem;
+  background: rgba(243, 240, 234, 0.76);
+  font-family: 'DM Sans', system-ui, sans-serif;
+  font-size: 8px;
+  font-weight: 400;
+  line-height: 1.4;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  text-align: center;
+  pointer-events: none;
+}
+
+@media (min-width: 768px) {
+  .work-album__label {
+    font-size: 8.5px;
+    letter-spacing: 0.2em;
+    padding: 0.38rem 0.52rem;
+  }
+}
+
+/* Album detail — editorial story (khác trang /work) */
+.album-detail {
+  padding-bottom: calc(var(--mosaic-space) * 2.5);
+  overflow-x: hidden;
+}
+
+.album-detail__intro {
+  text-align: center;
+  max-width: 36rem;
+  margin: 0 auto;
+  padding: 3rem var(--mosaic-space) 4.5rem;
+}
+
+@media (min-width: 768px) {
+  .album-detail__intro {
+    padding-top: 4rem;
+    padding-bottom: 5.5rem;
+  }
+}
+
+.album-detail__title {
+  font-size: clamp(2.15rem, 6vw, 3.75rem);
+  font-weight: 400;
+  letter-spacing: 0.1em;
+  line-height: 1.08;
+  margin: 0 0 2.75rem;
+  color: rgba(26, 26, 26, 0.92);
+}
+
+.album-detail__facts {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+  align-items: center;
+}
+
+.album-detail__fact {
+  margin: 0;
+  font-family: 'DM Sans', system-ui, sans-serif;
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(26, 26, 26, 0.55);
+}
+
+.album-detail__fact-label {
+  display: block;
+  margin-bottom: 0.35rem;
+  color: rgba(26, 26, 26, 0.4);
+  letter-spacing: 0.28em;
+}
+
+.album-detail__fact-value {
+  display: block;
+  letter-spacing: 0.18em;
+  color: rgba(26, 26, 26, 0.72);
+}
+
+/* Editorial story — từng ảnh/section căn giữa, kích thước khác nhau, không grid */
+.album-story {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 0 clamp(1.25rem, 4vw, var(--mosaic-space));
+  box-sizing: border-box;
+}
+
+.album-story__spacer {
+  width: 100%;
+  min-height: clamp(2.5rem, 6vh, 4.5rem);
+  flex-shrink: 0;
+}
+
+.album-story__figure {
+  margin: 0 auto clamp(2.25rem, 5.5vh, 4rem);
+  line-height: 0;
+  width: 100%;
+}
+
+.album-story__figure--wide {
+  max-width: min(58rem, 92vw);
+}
+
+.album-story__figure--landscape {
+  max-width: min(60rem, 93vw);
+}
+
+.album-story__figure--full {
+  max-width: min(54rem, 90vw);
+}
+
+.album-story__figure--inset {
+  max-width: min(40rem, 78vw);
+}
+
+.album-story__figure--portrait {
+  max-width: min(30rem, 64vw);
+}
+
+.album-story__duo {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+  width: 100%;
+  max-width: min(52rem, 88vw);
+  margin: 0 auto clamp(2.25rem, 5.5vh, 4rem);
+}
+
+@media (min-width: 640px) {
+  .album-story__duo {
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+}
+
+.album-story__figure--half {
+  max-width: none;
+  width: 100%;
+  margin-bottom: 0;
+}
+
+.album-story__duo .album-story__figure:last-child {
+  margin-bottom: 0;
+}
+
+.album-story__img {
+  display: block;
+  width: 100%;
+  height: auto;
+  vertical-align: middle;
+}
+
+.album-detail-footer {
+  max-width: 62rem;
+  margin: calc(var(--mosaic-space) * 2.5) auto 0;
+  padding: calc(var(--mosaic-space) * 1.5) var(--mosaic-space) 0;
+}
+
+.album-detail-footer__nav {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 1rem;
+  text-align: center;
+}
+
+.album-detail-footer__slot {
+  display: block;
+}
+
+.album-detail-footer__link {
+  font-family: 'DM Sans', system-ui, sans-serif;
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: rgba(26, 26, 26, 0.55);
+  padding: 0.85rem 0.25rem;
+  transition: color 0.2s ease;
+}
+
+.album-detail-footer__link:hover {
+  color: rgba(26, 26, 26, 0.9);
+}
+
+.album-detail-footer__link--prev {
+  text-align: left;
+  justify-self: start;
+}
+
+.album-detail-footer__link--center {
+  color: rgba(26, 26, 26, 0.75);
+  letter-spacing: 0.3em;
+}
+
+.album-detail-footer__link--next {
+  text-align: right;
+  justify-self: end;
+}
+
+@media (max-width: 520px) {
+  .album-detail-footer__nav {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
+
+  .album-detail-footer__link--prev,
+  .album-detail-footer__link--next,
+  .album-detail-footer__link--center {
+    text-align: center;
+    justify-self: center;
+  }
+
+  .album-detail-footer__slot {
+    display: none;
+  }
 }
 
 /* Mosaic grid — 3 cột bất đối xứng (tham khảo erichmcvey.com) */

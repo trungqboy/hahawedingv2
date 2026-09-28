@@ -2,67 +2,41 @@
 import Layout from '../layouts/Layout.astro';
 import SiteHeader from '../components/SiteHeader.astro';
 import SiteFooter from '../components/SiteFooter.astro';
-import { img, studio } from '../data/gallery';
+import { projectCoverSrc, projects } from '../data/projects';
 
 const base = import.meta.env.BASE_URL;
-
-const visuals = [
-  { src: img('486148641_678354381220198_4662320279076891235_n.jpg'), alt: 'Cặp đôi chụp ảnh cưới — HaHa Wedding' },
-  { src: img('484974207_676578228064480_2827346855033866682_n.jpg'), alt: 'Ảnh cưới concept lãng mạn' },
-  { src: img('492252228_703873295334973_8274147873496200990_n.jpg'), alt: 'Trang điểm cô dâu' },
-];
 ---
 
 <Layout
   title="Work | HaHa Wedding Studio"
-  description="Phong cách chụp ảnh cưới & trang điểm tại HaHa Wedding Studio — Thanh Kê, Bố Trạch, Quảng Bình."
+  description="Portfolio ảnh cưới theo từng cặp đôi — HaHa Wedding Studio, Quảng Bình."
 >
   <SiteHeader current="work" />
   <main class="bg-cream min-h-screen pt-[7.25rem] md:pt-[5.5rem]">
-    <article class="work-editorial">
-      <header class="work-editorial__intro">
-        <p class="work-editorial__kicker type-kicker">HaHa Wedding Studio</p>
-        <h1 class="work-editorial__title type-display-title">
-          Photography that honors the day — <span class="italic font-normal">not overshadows it</span>
-        </h1>
-      </header>
+    <div class="work-index">
+      <h1 class="sr-only">Work — HaHa Wedding Studio</h1>
 
-      <figure class="work-editorial__hero">
-        <img src={visuals[0].src} alt={visuals[0].alt} width="1600" height="1200" loading="eager" decoding="async" />
-      </figure>
-
-      <div class="work-editorial__body">
-        <p>
-          Chúng tôi tin ảnh cưới nên giúp bạn sống trọn ngày hôm đó — ánh sáng tự nhiên, nhịp chụp nhẹ nhàng, và sự
-          hướng dẫn tinh tế khi cần. Không ép pose, không làm căng buổi chụp; chỉ ghi lại cảm xúc thật giữa bạn và
-          người bạn chọn đi cùng.
-        </p>
-        <p>
-          Từ makeup cô dâu trong studio đến concept pre-wedding, mỗi dự án được chăm với cùng một tiêu chí: ảnh đẹp,
-          chân thật, còn ý nghĩa khi bạn mở album sau nhiều năm. Studio tại {studio.address} — phù hợp cặp đôi muốn
-          không gian riêng tư, ấm và gần gũi.
-        </p>
-        <p>
-          Dịch vụ gồm trang điểm, chụp concept trong studio, tư vấn trang phục &amp; bố cục; album và gói chi tiết
-          trao đổi khi bạn liên hệ. Xem toàn bộ ảnh trên trang Home hoặc nhắn tin qua Contact.
-        </p>
-      </div>
-
-      <div class="work-editorial__pair">
+      <ul class="work-index__grid">
         {
-          visuals.slice(1).map((item) => (
-            <figure>
-              <img src={item.src} alt={item.alt} loading="lazy" decoding="async" />
-            </figure>
+          projects.map((project, index) => (
+            <li class="work-index__cell">
+              <a href={`${base}work/${project.slug}/`} class="work-album group">
+                <img
+                  src={projectCoverSrc(project)}
+                  alt={project.title}
+                  class="work-album__img"
+                  loading={index < 3 ? 'eager' : 'lazy'}
+                  decoding="async"
+                  width="900"
+                  height="1125"
+                />
+                <span class="work-album__label" aria-hidden="true">{project.title}</span>
+              </a>
+            </li>
           ))
         }
-      </div>
-
-      <p class="work-editorial__cta">
-        <a href={base} class="work-editorial__link">View portfolio on Home</a>
-        <a href={`${base}inquire/`} class="work-editorial__link work-editorial__link--muted">Contact</a>
-      </p>
-    </article>
+      </ul>
+    </div>
   </main>
   <SiteFooter />
 </Layout>
