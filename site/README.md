@@ -1,6 +1,6 @@
 # HaHa Wedding Studio — bản WOW
 
-Landing Astro với **Lenis smooth scroll**, **GSAP ScrollTrigger** (hero zoom, chapter pin, gallery ngang), rồi phần dịch vụ / giá / liên hệ.
+Landing Astro phong cách **editorial tối giản** (tham khảo layout portfolio kiểu Erich McVey): trang chủ xếp ảnh full-width, **Giới thiệu**, **Liên hệ**. Component lookbook GSAP cũ: `LookbookIntro.astro` (không dùng trên trang chủ).
 
 ## Chạy thử
 
@@ -12,7 +12,7 @@ npm run dev
 
 Mở URL in terminal (thường `http://localhost:4321`).
 
-**Ảnh:** Đặt file `.jpg` trong `public/images/` (Astro phục vụ tại `/images/...`).
+**Ảnh:** Đặt file trong `public/images/` — trang chủ tự liệt kê. Ít hơn 18 ảnh: tự **lặp** đến ~48 khung (placeholder). Đủ 18+ ảnh: chỉ hiện ảnh thật. Chỉnh `FEED_TARGET_COUNT` / `preferredImageOrder` trong `src/data/gallery.ts`.
 
 ## Build production
 
@@ -23,8 +23,11 @@ npm run preview
 
 ## Cấu trúc
 
-- `src/components/LookbookIntro.astro` — phần mở wow (GSAP)
-- `src/pages/index.astro` — trang chính (lookbook + landing)
+- `src/pages/index.astro` — Home (lưới ảnh portfolio)
+- `src/pages/work.astro` — Work (giới thiệu phong cách / dịch vụ)
+- `src/pages/about.astro` — giới thiệu studio
+- `src/pages/inquire.astro` — form liên hệ
+- `src/components/LookbookIntro.astro` — lookbook GSAP (tùy chọn, không gắn trang chủ)
 
 ## Contact form → email (Web3Forms)
 

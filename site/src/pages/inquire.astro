@@ -1,0 +1,184 @@
+---
+import Layout from '../layouts/Layout.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import { social, studio } from '../data/gallery';
+
+const web3formsKey = import.meta.env.PUBLIC_WEB3FORMS_ACCESS_KEY ?? '';
+const emailFormEnabled = web3formsKey.length > 0;
+---
+
+<Layout title="Contact | HaHa Wedding Studio" description="Inquire about wedding photography and makeup — HaHa Wedding Studio, Quảng Bình.">
+  <SiteHeader current="inquire" />
+  <main class="bg-cream min-h-screen pt-[4.5rem] md:pt-[5.5rem]">
+    <section class="mx-auto max-w-md px-6 md:px-8 py-12 md:py-20">
+      <h1 class="type-display-title font-display text-3xl md:text-4xl text-center mb-12 tracking-tight">Contact</h1>
+
+      <form id="contact-form" class="space-y-8" novalidate>
+        <div>
+          <label for="name" class="block text-[11px] uppercase tracking-[0.2em] text-charcoal/55 mb-2">
+            Họ tên <span class="text-charcoal/40">*</span>
+          </label>
+          <input
+            id="name"
+            name="name"
+            type="text"
+            required
+            autocomplete="name"
+            class="w-full bg-transparent border-b border-charcoal/20 py-2.5 text-charcoal placeholder:text-charcoal/30 focus:outline-none focus:border-charcoal/50 transition"
+          />
+        </div>
+        <div>
+          <label for="email" class="block text-[11px] uppercase tracking-[0.2em] text-charcoal/55 mb-2">
+            Email <span class="text-charcoal/40">*</span>
+          </label>
+          <input
+            id="email"
+            name="email"
+            type="email"
+            required
+            autocomplete="email"
+            class="w-full bg-transparent border-b border-charcoal/20 py-2.5 text-charcoal placeholder:text-charcoal/30 focus:outline-none focus:border-charcoal/50 transition"
+          />
+        </div>
+        <div>
+          <label for="phone" class="block text-[11px] uppercase tracking-[0.2em] text-charcoal/55 mb-2">
+            Số điện thoại <span class="text-charcoal/40">*</span>
+          </label>
+          <input
+            id="phone"
+            name="phone"
+            type="tel"
+            required
+            autocomplete="tel"
+            class="w-full bg-transparent border-b border-charcoal/20 py-2.5 text-charcoal placeholder:text-charcoal/30 focus:outline-none focus:border-charcoal/50 transition"
+          />
+        </div>
+        <div>
+          <label for="message" class="block text-[11px] uppercase tracking-[0.2em] text-charcoal/55 mb-2">
+            Nội dung <span class="text-charcoal/40">*</span>
+          </label>
+          <textarea
+            id="message"
+            name="message"
+            rows="4"
+            required
+            placeholder="Ngày cưới dự kiến, gói dịch vụ bạn quan tâm…"
+            class="w-full bg-transparent border-b border-charcoal/20 py-2.5 text-charcoal placeholder:text-charcoal/30 focus:outline-none focus:border-charcoal/50 transition resize-y min-h-[100px]"
+          ></textarea>
+        </div>
+        <button
+          type="submit"
+          class="w-full border border-charcoal/25 py-3.5 text-xs uppercase tracking-[0.25em] text-charcoal hover:bg-charcoal hover:text-cream transition duration-300"
+        >
+          Gửi tin nhắn
+        </button>
+      </form>
+
+      <p id="contact-success" class="hidden mt-6 text-center text-sm text-charcoal/70">
+        Cảm ơn bạn — tin nhắn đã được gửi. Studio sẽ liên hệ lại sớm.
+      </p>
+      <p id="contact-error" class="hidden mt-6 text-center text-sm text-red-700/80">
+        Gửi không thành công. Vui lòng thử lại hoặc nhắn Facebook.
+      </p>
+      <p id="contact-hint" class="hidden mt-6 text-center text-sm text-charcoal/60">
+        Nội dung đã được copy — dán vào Messenger khi trang Facebook mở.
+      </p>
+
+      <div class="mt-16 pt-10 border-t border-charcoal/10 text-center space-y-4 text-sm text-charcoal/70">
+        <div>
+          <p class="text-[11px] uppercase tracking-[0.2em] text-charcoal/45 mb-2">Địa chỉ studio</p>
+          <a
+            href={studio.mapsUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="hover:text-charcoal transition leading-relaxed"
+          >
+            {studio.address}
+          </a>
+        </div>
+        <p>
+          <a href={social.facebook} target="_blank" rel="noopener noreferrer" class="hover:text-charcoal transition">
+            Facebook
+          </a>
+        </p>
+        <p>
+          <a href={`mailto:${social.email}`} class="hover:text-charcoal transition">{social.email}</a>
+        </p>
+      </div>
+    </section>
+  </main>
+  <SiteFooter />
+
+  <script define:vars={{ facebookUrl: social.facebook, web3formsKey, emailFormEnabled }}>
+    const form = document.getElementById('contact-form');
+    const hint = document.getElementById('contact-hint');
+    const successEl = document.getElementById('contact-success');
+    const errorEl = document.getElementById('contact-error');
+    const submitBtn = form?.querySelector('button[type="submit"]');
+
+    form?.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      successEl?.classList.add('hidden');
+      errorEl?.classList.add('hidden');
+      hint?.classList.add('hidden');
+
+      const data = new FormData(form);
+      const name = String(data.get('name') ?? '').trim();
+      const email = String(data.get('email') ?? '').trim();
+      const phone = String(data.get('phone') ?? '').trim();
+      const message = String(data.get('message') ?? '').trim();
+
+      if (!name || !email || !phone || !message) {
+        alert('Vui lòng điền đầy đủ các trường bắt buộc.');
+        return;
+      }
+
+      if (emailFormEnabled) {
+        submitBtn?.setAttribute('disabled', 'true');
+        const label = submitBtn?.textContent;
+        if (submitBtn) submitBtn.textContent = 'Đang gửi…';
+
+        try {
+          const res = await fetch('https://api.web3forms.com/submit', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+            body: JSON.stringify({
+              access_key: web3formsKey,
+              subject: `HaHa Wedding — liên hệ từ ${name}`,
+              name,
+              email,
+              phone,
+              message,
+              from_name: 'HaHa Wedding Studio website',
+            }),
+          });
+          const json = await res.json();
+          if (json.success) {
+            form.reset();
+            successEl?.classList.remove('hidden');
+          } else {
+            errorEl?.classList.remove('hidden');
+          }
+        } catch {
+          errorEl?.classList.remove('hidden');
+        } finally {
+          submitBtn?.removeAttribute('disabled');
+          if (submitBtn && label) submitBtn.textContent = label;
+        }
+        return;
+      }
+
+      const text = `Xin chào HaHa Wedding Studio,\n\nHọ tên: ${name}\nEmail: ${email}\nSĐT: ${phone}\n\n${message}`;
+
+      try {
+        await navigator.clipboard.writeText(text);
+        hint?.classList.remove('hidden');
+      } catch {
+        hint?.classList.add('hidden');
+      }
+
+      window.open(facebookUrl, '_blank', 'noopener,noreferrer');
+    });
+  </script>
+</Layout>

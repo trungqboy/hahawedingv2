@@ -1,0 +1,52 @@
+---
+import { social } from '../data/gallery';
+
+const { current = 'home' } = Astro.props as { current?: 'home' | 'work' | 'about' | 'inquire' };
+
+const base = import.meta.env.BASE_URL;
+
+const nav = [
+  { id: 'home', label: 'Home', href: base },
+  { id: 'work', label: 'Work', href: `${base}work/` },
+  { id: 'about', label: 'About', href: `${base}about/` },
+  { id: 'inquire', label: 'Contact', href: `${base}inquire/` },
+] as const;
+
+const isActive = (id: (typeof nav)[number]['id']) => current === id;
+---
+
+<header class="site-header fixed top-0 inset-x-0 z-50 pointer-events-none">
+  <div class="site-header-inner pointer-events-auto mx-auto flex items-center justify-between py-5 md:py-7">
+    <a href={base} class="site-logo font-display uppercase text-charcoal/90 hover:text-charcoal transition">
+      HaHa Wedding
+    </a>
+    <nav class="site-nav flex items-center justify-end flex-wrap">
+      {
+        nav.map((item) => (
+          <a
+            href={item.href}
+            class:list={[
+              'hover:text-charcoal transition border-b border-transparent pb-0.5',
+              isActive(item.id) && 'is-active text-charcoal border-charcoal/35',
+            ]}
+          >
+            {item.label}
+          </a>
+        ))
+      }
+      <a
+        href={social.instagram}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="site-nav__ig hover:text-charcoal transition"
+        aria-label="Instagram"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.35" aria-hidden="true">
+          <rect x="3.5" y="3.5" width="17" height="17" rx="4.5" />
+          <circle cx="12" cy="12" r="4" />
+          <circle cx="17.4" cy="6.6" r="0.9" fill="currentColor" stroke="none" />
+        </svg>
+      </a>
+    </nav>
+  </div>
+</header>

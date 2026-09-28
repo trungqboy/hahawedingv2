@@ -1,0 +1,35 @@
+---
+import { social, studio } from '../data/gallery';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="border-t border-charcoal/10 bg-cream">
+  <div class="mx-auto px-5 md:px-8 py-10 md:py-12 grid gap-6 md:grid-cols-3 items-center text-[11px] uppercase tracking-[0.2em] text-charcoal/55">
+    <p class="text-center md:text-left normal-case tracking-normal text-sm text-charcoal/65 leading-relaxed">
+      <span class="block text-[10px] uppercase tracking-[0.2em] text-charcoal/45 mb-1">Địa chỉ</span>
+      <a
+        href={studio.mapsUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="hover:text-charcoal transition normal-case"
+      >
+        {studio.address}
+      </a>
+    </p>
+    <p class="text-center font-display font-normal text-sm md:text-base tracking-[0.14em] text-charcoal/80 normal-case">
+      © {year} HaHa Wedding Studio
+    </p>
+    <p class="text-center md:text-right space-x-3 md:space-x-4">
+      <a href={`mailto:${social.email}`} class="hover:text-charcoal transition">Email</a>
+      <span class="text-charcoal/25" aria-hidden="true">|</span>
+      <a href={social.facebook} target="_blank" rel="noopener noreferrer" class="hover:text-charcoal transition">
+        Facebook
+      </a>
+      <span class="text-charcoal/25" aria-hidden="true">|</span>
+      <a href={social.tiktok} target="_blank" rel="noopener noreferrer" class="hover:text-charcoal transition">
+        TikTok
+      </a>
+    </p>
+  </div>
+</footer>

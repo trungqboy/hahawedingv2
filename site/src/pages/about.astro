@@ -1,0 +1,52 @@
+---
+import Layout from '../layouts/Layout.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import { img } from '../data/gallery';
+
+const portrait = img('497510492_719181543804148_7336016173145369377_n.jpg');
+---
+
+<Layout
+  title="About | HaHa Wedding Studio"
+  description="HaHa Wedding Studio — chụp ảnh cưới, pre-wedding và trang điểm cô dâu tại studio."
+>
+  <SiteHeader current="about" />
+  <main class="bg-cream min-h-screen pt-[4.5rem] md:pt-[5.5rem]">
+    <article class="mx-auto max-w-3xl px-6 md:px-8 py-12 md:py-20">
+      <p class="type-kicker mb-6">HaHa Wedding Studio</p>
+      <h1 class="type-display-title font-display text-4xl md:text-5xl lg:text-6xl leading-[1.05] mb-10 md:mb-14">
+        Lưu giữ khoảnh khắc <span class="italic font-normal">trọn vẹn &amp; chân thật</span>
+      </h1>
+
+      <figure class="mb-12 md:mb-16">
+        <img src={portrait} alt="Ảnh cưới tại HaHa Wedding Studio" class="w-full h-auto object-cover" loading="eager" />
+      </figure>
+
+      <div class="space-y-6 text-charcoal/80 text-base md:text-lg leading-relaxed font-sans">
+        <p>
+          HaHa Wedding Studio là nơi bạn có thể thả lỏng trước ống kính — chúng tôi ưu tiên ánh sáng tự nhiên, cảm xúc
+          thật và những khoảnh khắc nhỏ giữa ngày trọng đại của bạn.
+        </p>
+        <p>
+          Từ trang điểm cô dâu đến chụp concept trong studio, đội ngũ theo sát từng bước để bạn chỉ cần tập trung vào
+          nhau. Mỗi album là một câu chuyện riêng — không pose gượng, không ảnh giống ảnh của người khác.
+        </p>
+        <p>
+          Bạn có thể xem portfolio trên trang chủ, nhắn tin qua Facebook hoặc gửi form liên hệ — chúng tôi sẽ phản hồi
+          trong thời gian sớm nhất.
+        </p>
+      </div>
+
+      <p class="mt-12 text-center">
+        <a
+          href={`${import.meta.env.BASE_URL}inquire/`}
+          class="inline-block border border-charcoal/25 px-8 py-3.5 text-[11px] uppercase tracking-[0.25em] text-charcoal hover:bg-charcoal hover:text-cream transition duration-300"
+        >
+          Đặt lịch tư vấn
+        </a>
+      </p>
+    </article>
+  </main>
+  <SiteFooter />
+</Layout>

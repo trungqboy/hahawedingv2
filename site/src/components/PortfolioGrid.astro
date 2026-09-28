@@ -1,0 +1,231 @@
+---
+import type { GalleryItem } from '../data/gallery';
+
+interface Props {
+  items: GalleryItem[];
+}
+
+const { items } = Astro.props;
+const srcList = items.map((i) => i.src);
+
+const chunkSize = 4;
+const blocks: GalleryItem[][] = [];
+for (let i = 0; i < items.length; i += chunkSize) {
+  blocks.push(items.slice(i, i + chunkSize));
+}
+
+let globalIndex = 0;
+
+const slotFor = (blockIndex: number, position: number) => {
+  const flipped = blockIndex % 2 === 1;
+  const slots = flipped ? ['b0', 'b1', 'b2', 'b3'] : ['a0', 'a1', 'a2', 'a3'];
+  return slots[position] ?? 'fallback';
+};
+---
+
+<section class="portfolio-mosaic w-full" aria-label="Portfolio">
+  {
+    blocks.map((block, blockIndex) => {
+      if (block.length < chunkSize) {
+        return (
+          <div class="mosaic-stack">
+            {block.map((item) => {
+              const index = globalIndex++;
+              return (
+                <figure class="portfolio-item mosaic-reveal group relative bg-cream overflow-hidden" data-reveal-delay="0">
+                  <button
+                    type="button"
+                    class="portfolio-thumb block w-full text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-charcoal/25"
+                    data-fullsrc={item.src}
+                    data-alt={item.alt}
+                    data-index={index}
+                  >
+                    <img
+                      src={item.src}
+                      alt={item.alt}
+                      class="w-full h-auto block select-none"
+                      loading={index < 4 ? 'eager' : 'lazy'}
+                      decoding="async"
+                      fetchpriority={index === 0 ? 'high' : undefined}
+                    />
+                    <span class="mosaic-overlay" aria-hidden="true">
+                      <span class="mosaic-overlay-label">View fullsize</span>
+                    </span>
+                  </button>
+                </figure>
+              );
+            })}
+          </div>
+        );
+      }
+
+      return (
+        <div class="mosaic-block">
+          {block.map((item, position) => {
+            const index = globalIndex++;
+            const slot = slotFor(blockIndex, position);
+            const isTall = slot === 'a2' || slot === 'a3' || slot === 'b0' || slot === 'b1';
+
+            return (
+              <figure
+                class:list={['portfolio-item mosaic-slot mosaic-reveal group relative bg-cream overflow-hidden', `mosaic-slot--${slot}`]}
+                data-reveal-delay={String(position)}
+              >
+                <button
+                  type="button"
+                  class:list={[
+                    'portfolio-thumb block w-full text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-charcoal/25',
+                    isTall && 'mosaic-thumb-tall',
+                  ]}
+                  data-fullsrc={item.src}
+                  data-alt={item.alt}
+                  data-index={index}
+                >
+                  <img
+                    src={item.src}
+                    alt={item.alt}
+                    class:list={['select-none', isTall ? 'mosaic-img-cover' : 'w-full h-auto block']}
+                    loading={index < 4 ? 'eager' : 'lazy'}
+                    decoding="async"
+                    fetchpriority={index === 0 ? 'high' : undefined}
+                  />
+                  <span class="mosaic-overlay" aria-hidden="true">
+                    <span class="mosaic-overlay-label">View fullsize</span>
+                  </span>
+                </button>
+              </figure>
+            );
+          })}
+        </div>
+      );
+    })
+  }
+</section>
+
+<div
+  id="lightbox"
+  class="lightbox fixed inset-0 z-[200] hidden items-center justify-center p-4 md:p-8"
+  role="dialog"
+  aria-modal="true"
+  aria-label="Ảnh phóng to"
+  hidden
+>
+  <div id="lightbox-backdrop" class="lightbox-backdrop" aria-hidden="true"></div>
+  <button
+    type="button"
+    id="lightbox-close"
+    class="absolute top-4 right-4 md:top-6 md:right-6 text-white/70 hover:text-white text-[10px] uppercase tracking-[0.28em] z-[3]"
+  >
+    Đóng
+  </button>
+  <button
+    type="button"
+    id="lightbox-prev"
+    class="absolute left-2 md:left-6 top-1/2 -translate-y-1/2 text-white/60 hover:text-white text-xs uppercase tracking-widest z-[3] px-2 py-4"
+    aria-label="Ảnh trước"
+  >
+    ‹
+  </button>
+  <button
+    type="button"
+    id="lightbox-next"
+    class="absolute right-2 md:right-6 top-1/2 -translate-y-1/2 text-white/60 hover:text-white text-xs uppercase tracking-widest z-[3] px-2 py-4"
+    aria-label="Ảnh sau"
+  >
+    ›
+  </button>
+  <img id="lightbox-img" src="" alt="" class="lightbox-img max-h-[92vh] max-w-full w-auto object-contain relative z-[2]" />
+</div>
+
+<script define:vars={{ srcList }}>
+  const lightbox = document.getElementById('lightbox');
+  const lightboxImg = document.getElementById('lightbox-img');
+  const closeBtn = document.getElementById('lightbox-close');
+  const prevBtn = document.getElementById('lightbox-prev');
+  const nextBtn = document.getElementById('lightbox-next');
+  const thumbs = Array.from(document.querySelectorAll('.portfolio-thumb'));
+
+  let currentIndex = 0;
+
+  const showAt = (index) => {
+    if (!lightboxImg || !srcList.length) return;
+    currentIndex = (index + srcList.length) % srcList.length;
+    const btn = thumbs[currentIndex];
+    lightboxImg.src = srcList[currentIndex];
+    lightboxImg.alt = btn?.getAttribute('data-alt') ?? '';
+  };
+
+  const openLightbox = (index) => {
+    if (!lightbox) return;
+    showAt(index);
+    lightbox.hidden = false;
+    lightbox.classList.remove('hidden');
+    lightbox.classList.add('flex');
+    lightbox.classList.remove('is-opening');
+    void lightbox.offsetWidth;
+    lightbox.classList.add('is-opening');
+    document.body.style.overflow = 'hidden';
+  };
+
+  const closeLightbox = () => {
+    if (!lightbox || !lightboxImg) return;
+    lightbox.hidden = true;
+    lightbox.classList.add('hidden');
+    lightbox.classList.remove('flex', 'is-opening');
+    lightboxImg.src = '';
+    document.body.style.overflow = '';
+  };
+
+  thumbs.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const index = Number(btn.getAttribute('data-index') ?? 0);
+      openLightbox(index);
+    });
+  });
+
+  closeBtn?.addEventListener('click', closeLightbox);
+  prevBtn?.addEventListener('click', () => showAt(currentIndex - 1));
+  nextBtn?.addEventListener('click', () => showAt(currentIndex + 1));
+
+  const backdrop = document.getElementById('lightbox-backdrop');
+  backdrop?.addEventListener('click', closeLightbox);
+  lightbox?.addEventListener('click', (e) => {
+    if (e.target === lightbox || e.target === backdrop) closeLightbox();
+  });
+
+  window.addEventListener('keydown', (e) => {
+    if (lightbox?.classList.contains('hidden')) return;
+    if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'ArrowLeft') showAt(currentIndex - 1);
+    if (e.key === 'ArrowRight') showAt(currentIndex + 1);
+  });
+
+  const revealEls = document.querySelectorAll('.mosaic-reveal');
+  const motionOk = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (!motionOk) {
+    revealEls.forEach((el) => el.classList.add('is-visible'));
+  } else {
+    const show = (el) => el.classList.add('is-visible');
+    const inView = (el) => {
+      const rect = el.getBoundingClientRect();
+      return rect.top < window.innerHeight * 0.94 && rect.bottom > 0;
+    };
+
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          show(entry.target);
+          io.unobserve(entry.target);
+        });
+      },
+      { root: null, rootMargin: '0px 0px -4% 0px', threshold: 0.08 },
+    );
+
+    revealEls.forEach((el) => {
+      if (inView(el)) show(el);
+      else io.observe(el);
+    });
+  }
+</script>

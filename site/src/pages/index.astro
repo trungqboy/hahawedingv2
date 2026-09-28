@@ -1,199 +1,33 @@
 ---
+import fs from 'node:fs';
+import path from 'node:path';
 import Layout from '../layouts/Layout.astro';
-import LookbookIntro from '../components/LookbookIntro.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import PortfolioGrid from '../components/PortfolioGrid.astro';
+import { buildGalleryItems, expandGalleryFeed, galleryImagesFallback } from '../data/gallery';
 
-/** Cập nhật link TikTok thật khi có */
-const social = {
-  facebook: 'https://www.facebook.com/thu.ha.nguyen.479756',
-  tiktok: 'https://www.tiktok.com/',
-};
+const imagesDir = path.join(process.cwd(), 'public', 'images');
+let galleryImages = galleryImagesFallback;
 
-/** Lấy key tại https://web3forms.com → tạo file site/.env (xem .env.example) */
-const web3formsKey = import.meta.env.PUBLIC_WEB3FORMS_ACCESS_KEY ?? '';
-const emailFormEnabled = web3formsKey.length > 0;
+if (fs.existsSync(imagesDir)) {
+  const files = fs.readdirSync(imagesDir);
+  const built = buildGalleryItems(files);
+  if (built.length > 0) galleryImages = expandGalleryFeed(built);
+}
 ---
 
-<Layout title="HaHa Wedding Studio | Lookbook &amp; concept cưới">
-  <LookbookIntro />
-
-  <div id="main-site" class="bg-ivory text-charcoal">
-    <section id="contact" class="px-6 py-20 md:py-28">
-      <div class="max-w-md mx-auto">
-        <h2 class="font-display text-3xl md:text-4xl text-center mb-14 tracking-tight">Contact</h2>
-
-        <form id="contact-form" class="space-y-8" novalidate>
-          <div>
-            <label for="name" class="block text-[11px] uppercase tracking-[0.2em] text-charcoal/55 mb-2">
-              Name <span class="text-charcoal/40">*</span>
-            </label>
-            <input
-              id="name"
-              name="name"
-              type="text"
-              required
-              autocomplete="name"
-              class="w-full bg-transparent border-b border-charcoal/20 py-2.5 text-charcoal placeholder:text-charcoal/30 focus:outline-none focus:border-charcoal/50 transition"
-            />
-          </div>
-          <div>
-            <label for="email" class="block text-[11px] uppercase tracking-[0.2em] text-charcoal/55 mb-2">
-              Email <span class="text-charcoal/40">*</span>
-            </label>
-            <input
-              id="email"
-              name="email"
-              type="email"
-              required
-              autocomplete="email"
-              class="w-full bg-transparent border-b border-charcoal/20 py-2.5 text-charcoal placeholder:text-charcoal/30 focus:outline-none focus:border-charcoal/50 transition"
-            />
-          </div>
-          <div>
-            <label for="phone" class="block text-[11px] uppercase tracking-[0.2em] text-charcoal/55 mb-2">
-              Phone <span class="text-charcoal/40">*</span>
-            </label>
-            <input
-              id="phone"
-              name="phone"
-              type="tel"
-              required
-              autocomplete="tel"
-              class="w-full bg-transparent border-b border-charcoal/20 py-2.5 text-charcoal placeholder:text-charcoal/30 focus:outline-none focus:border-charcoal/50 transition"
-            />
-          </div>
-          <div>
-            <label for="message" class="block text-[11px] uppercase tracking-[0.2em] text-charcoal/55 mb-2">
-              Message <span class="text-charcoal/40">*</span>
-            </label>
-            <textarea
-              id="message"
-              name="message"
-              rows="4"
-              required
-              class="w-full bg-transparent border-b border-charcoal/20 py-2.5 text-charcoal placeholder:text-charcoal/30 focus:outline-none focus:border-charcoal/50 transition resize-y min-h-[100px]"
-            ></textarea>
-          </div>
-          <button
-            type="submit"
-            class="w-full border border-charcoal/25 py-3.5 text-xs uppercase tracking-[0.25em] text-charcoal hover:bg-charcoal hover:text-ivory transition duration-300"
-          >
-            Send message
-          </button>
-        </form>
-
-        <p id="contact-success" class="hidden mt-6 text-center text-sm text-charcoal/70">
-          Thank you — your message was sent. We will get back to you soon.
-        </p>
-
-        <p id="contact-error" class="hidden mt-6 text-center text-sm text-red-700/80">
-          Something went wrong. Please try again or message us on Facebook.
-        </p>
-
-        <p id="contact-hint" class="hidden mt-6 text-center text-sm text-charcoal/60">
-          Message copied — paste it in Facebook Messenger when the page opens.
-        </p>
-
-        <div class="mt-16 pt-10 border-t border-charcoal/10 text-center space-y-6 text-sm">
-          <div>
-            <p class="text-[11px] uppercase tracking-[0.2em] text-charcoal/45 mb-2">Facebook</p>
-            <a
-              href={social.facebook}
-              target="_blank"
-              rel="noopener noreferrer"
-              class="text-charcoal hover:text-charcoal/70 transition break-all"
-            >
-              facebook.com/thu.ha.nguyen.479756
-            </a>
-          </div>
-          <div>
-            <p class="text-[11px] uppercase tracking-[0.2em] text-charcoal/45 mb-2">TikTok</p>
-            <a
-              href={social.tiktok}
-              target="_blank"
-              rel="noopener noreferrer"
-              class="text-charcoal hover:text-charcoal/70 transition"
-            >
-              Follow on TikTok
-            </a>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <footer class="border-t border-charcoal/10 py-8 text-center text-xs text-charcoal/40 px-6">
-      <p>&copy; {new Date().getFullYear()} HaHa Wedding Studio</p>
-    </footer>
-  </div>
-
-  <script define:vars={{ facebookUrl: social.facebook, web3formsKey, emailFormEnabled }}>
-    const form = document.getElementById('contact-form');
-    const hint = document.getElementById('contact-hint');
-    const successEl = document.getElementById('contact-success');
-    const errorEl = document.getElementById('contact-error');
-    const submitBtn = form?.querySelector('button[type="submit"]');
-
-    form?.addEventListener('submit', async (event) => {
-      event.preventDefault();
-      successEl?.classList.add('hidden');
-      errorEl?.classList.add('hidden');
-      hint?.classList.add('hidden');
-
-      const data = new FormData(form);
-      const name = String(data.get('name') ?? '').trim();
-      const email = String(data.get('email') ?? '').trim();
-      const phone = String(data.get('phone') ?? '').trim();
-      const message = String(data.get('message') ?? '').trim();
-
-      if (!name || !email || !phone || !message) {
-        alert('Please fill in all required fields.');
-        return;
-      }
-
-      if (emailFormEnabled) {
-        submitBtn?.setAttribute('disabled', 'true');
-        const label = submitBtn?.textContent;
-        if (submitBtn) submitBtn.textContent = 'Sending…';
-
-        try {
-          const res = await fetch('https://api.web3forms.com/submit', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-            body: JSON.stringify({
-              access_key: web3formsKey,
-              subject: `HaHa Wedding — inquiry from ${name}`,
-              name,
-              email,
-              phone,
-              message,
-              from_name: 'HaHa Wedding Studio website',
-            }),
-          });
-          const json = await res.json();
-          if (json.success) {
-            form.reset();
-            successEl?.classList.remove('hidden');
-          } else {
-            errorEl?.classList.remove('hidden');
-          }
-        } catch {
-          errorEl?.classList.remove('hidden');
-        } finally {
-          submitBtn?.removeAttribute('disabled');
-          if (submitBtn && label) submitBtn.textContent = label;
-        }
-        return;
-      }
-
-      const text = `Hello HaHa Wedding Studio,\n\nName: ${name}\nEmail: ${email}\nPhone: ${phone}\n\n${message}`;
-
-      try {
-        await navigator.clipboard.writeText(text);
-        hint?.classList.remove('hidden');
-      } catch {
-        hint?.classList.add('hidden');
-      }
-
-      window.open(facebookUrl, '_blank', 'noopener,noreferrer');
-    });
-  </script>
+<Layout
+  title="HaHa Wedding Studio | Chụp ảnh cưới &amp; trang điểm"
+  description="Studio chụp ảnh cưới và trang điểm — ảnh chân thật, ánh sáng tự nhiên, phong cách editorial."
+>
+  <SiteHeader current="home" />
+  <main class="bg-cream min-h-screen pt-[5.5rem] md:pt-[6.5rem]">
+    <div class="sr-only">
+      <h1>HaHa Wedding Studio — Portfolio ảnh cưới</h1>
+      <p>{galleryImages.length} ảnh</p>
+    </div>
+    <PortfolioGrid items={galleryImages} />
+  </main>
+  <SiteFooter />
 </Layout>
