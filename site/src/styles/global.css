@@ -436,9 +436,11 @@
 /* Album story — cùng bề rộng & tỉ lệ 4:5 như lưới /work */
 .album-story {
   --album-story-max: min(56rem, 92vw);
+  --album-story-gap: clamp(0.75rem, 1.75vh, 1.15rem);
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: var(--album-story-gap);
   width: 100%;
   max-width: 100%;
   margin: 0 auto;
@@ -448,12 +450,12 @@
 
 .album-story__spacer {
   width: 100%;
-  min-height: clamp(1.5rem, 4vh, 2.5rem);
+  min-height: var(--album-story-gap);
   flex-shrink: 0;
 }
 
 .album-story__figure {
-  margin: 0 auto clamp(1.25rem, 3vh, 2rem);
+  margin: 0 auto;
   line-height: 0;
   width: 100%;
   max-width: var(--album-story-max);
@@ -465,16 +467,33 @@
 .album-story__duo {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 10px;
+  gap: var(--album-story-gap);
   width: 100%;
   max-width: var(--album-story-max);
-  margin: 0 auto clamp(1.25rem, 3vh, 2rem);
+  margin: 0 auto;
 }
 
 @media (min-width: 640px) {
+  .album-story {
+    --album-story-gap: clamp(0.85rem, 2vh, 1.25rem);
+  }
+
   .album-story__duo {
     grid-template-columns: 1fr 1fr;
-    gap: 12px;
+  }
+}
+
+@media (max-width: 639px) {
+  .album-story {
+    --album-story-gap: 0.5rem;
+    --album-story-max: min(56rem, 100%);
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+  }
+
+  /* Spacer editorial + margin cũ gây hở lớn giữa 2 ảnh — mobile chỉ dùng gap */
+  .album-story__spacer {
+    display: none;
   }
 }
 
