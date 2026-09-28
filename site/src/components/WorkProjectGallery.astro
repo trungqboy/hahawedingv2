@@ -46,23 +46,6 @@ function buildStoryBlocks(images: ProjectImage[]): StoryBlock[] {
   return blocks;
 }
 
-const layoutClass = (layout?: ProjectImage['layout']) => {
-  switch (layout) {
-    case 'wide':
-      return 'album-story__figure--wide';
-    case 'landscape':
-      return 'album-story__figure--landscape';
-    case 'inset':
-      return 'album-story__figure--inset';
-    case 'narrow':
-    case 'portrait':
-      return 'album-story__figure--portrait';
-    case 'full':
-    default:
-      return 'album-story__figure--full';
-  }
-};
-
 const sequence = expandStoryImages(project.images);
 const blocks = buildStoryBlocks(sequence);
 ---
@@ -109,7 +92,7 @@ const blocks = buildStoryBlocks(sequence);
       if (!image.path) return null;
 
       return (
-        <figure class:list={['album-story__figure', layoutClass(image.layout)]}>
+        <figure class="album-story__figure">
           <img
             src={projectImageSrc(image.path)}
             alt={imageAlt(project, image, index)}

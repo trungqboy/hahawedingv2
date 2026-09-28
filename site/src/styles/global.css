@@ -433,8 +433,9 @@
   color: rgba(26, 26, 26, 0.72);
 }
 
-/* Editorial story — từng ảnh/section căn giữa, kích thước khác nhau, không grid */
+/* Album story — cùng bề rộng & tỉ lệ 4:5 như lưới /work */
 .album-story {
+  --album-story-max: min(56rem, 92vw);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -447,34 +448,18 @@
 
 .album-story__spacer {
   width: 100%;
-  min-height: clamp(2.5rem, 6vh, 4.5rem);
+  min-height: clamp(1.5rem, 4vh, 2.5rem);
   flex-shrink: 0;
 }
 
 .album-story__figure {
-  margin: 0 auto clamp(2.25rem, 5.5vh, 4rem);
+  margin: 0 auto clamp(1.25rem, 3vh, 2rem);
   line-height: 0;
   width: 100%;
-}
-
-.album-story__figure--wide {
-  max-width: min(58rem, 92vw);
-}
-
-.album-story__figure--landscape {
-  max-width: min(60rem, 93vw);
-}
-
-.album-story__figure--full {
-  max-width: min(54rem, 90vw);
-}
-
-.album-story__figure--inset {
-  max-width: min(40rem, 78vw);
-}
-
-.album-story__figure--portrait {
-  max-width: min(30rem, 64vw);
+  max-width: var(--album-story-max);
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  background: rgba(26, 26, 26, 0.04);
 }
 
 .album-story__duo {
@@ -482,8 +467,8 @@
   grid-template-columns: 1fr;
   gap: 10px;
   width: 100%;
-  max-width: min(52rem, 88vw);
-  margin: 0 auto clamp(2.25rem, 5.5vh, 4rem);
+  max-width: var(--album-story-max);
+  margin: 0 auto clamp(1.25rem, 3vh, 2rem);
 }
 
 @media (min-width: 640px) {
@@ -506,7 +491,9 @@
 .album-story__img {
   display: block;
   width: 100%;
-  height: auto;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
   vertical-align: middle;
 }
 
